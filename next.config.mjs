@@ -9,10 +9,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // GitHub Pages এর জন্য
-  // output: 'export', // Static export disabled for server mode
-  trailingSlash: true,
-  basePath: process.env.NODE_ENV === 'production' ? '/islamic-guide-regular' : '',
+  // Vercel deployment এর জন্য
+  trailingSlash: false,
+  // basePath: process.env.NODE_ENV === 'production' ? '/islamic-guide-regular' : '',
 }
 
 export default nextConfig
