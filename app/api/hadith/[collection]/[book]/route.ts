@@ -27,7 +27,7 @@ interface BookInfo {
 
 // Multiple free API endpoints
 const API_ENDPOINTS = [
-  'https://alquranbd.com/api',
+  // 'https://alquranbd.com/api', // Removed Quran API
   'https://api.sunnah.com/v1',
   'https://hadithapi.com/api'
 ]

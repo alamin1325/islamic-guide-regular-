@@ -42,6 +42,12 @@ export class ErrorBoundary extends Component<Props, State> {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground">দুঃখিত, অ্যাপ লোড করতে সমস্যা হয়েছে। অনুগ্রহ করে পুনরায় চেষ্টা করুন।</p>
+              {this.state.error && (
+                <pre style={{ color: 'red', background: '#fff0f0', padding: 12, borderRadius: 8, fontSize: 12, overflowX: 'auto' }}>
+                  {this.state.error.toString()}
+                  {this.state.error.stack ? '\n' + this.state.error.stack : ''}
+                </pre>
+              )}
               <Button
                 onClick={() => {
                   this.setState({ hasError: false })

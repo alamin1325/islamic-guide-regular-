@@ -7,7 +7,7 @@ import { ShareButton } from "@/components/share-button"
 import { BookOpen, Clock, Heart, Scroll, Compass, Calculator, Moon, Sun, Menu, Search, Share2 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { fetchPrayerTimes, fetchVerseOfDay } from "@/lib/api"
+import { fetchPrayerTimes } from "@/lib/api"
 import { OfflineIndicator } from "@/components/offline-indicator"
 import { PrayerTimesStatus } from "@/components/prayer-times-status"
 import { PrayerTimesDebug } from "@/components/prayer-times-debug"
@@ -72,7 +72,7 @@ export default function HomePage() {
       setLoading(true)
       console.log("Starting to fetch data...")
 
-      const [prayerResponse, verseResponse] = await Promise.allSettled([fetchPrayerTimes(), fetchVerseOfDay()])
+      const [prayerResponse] = await Promise.allSettled([fetchPrayerTimes()])
 
       // Handle prayer times response
       if (prayerResponse.status === "fulfilled" && prayerResponse.value.success && prayerResponse.value.data) {
@@ -122,20 +122,14 @@ export default function HomePage() {
       }
 
       // Handle verse of day response
-      if (verseResponse.status === "fulfilled" && verseResponse.value.success && verseResponse.value.data) {
-        setVerseOfDay(verseResponse.value.data)
-        console.log("Verse of day loaded successfully")
-      } else {
-        console.warn("Verse of day failed, using fallback")
-        setVerseOfDay({
-          surahNumber: 1,
-          surahName: "আল-ফাতিহা",
-          verseNumber: 1,
-          arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
-          bengali: "পরম করুণাময় ও অসীম দয়ালু আল্লাহর নামে (শুরু করছি)।",
-          reference: "সূরা আল-ফাতিহা, আয়াত ১",
-        })
-      }
+      setVerseOfDay({
+        surahNumber: 1,
+        surahName: "আল-ফাতিহা",
+        verseNumber: 1,
+        arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+        bengali: "পরম করুণাময় ও অসীম দয়ালু আল্লাহর নামে (শুরু করছি)।",
+        reference: "সূরা আল-ফাতিহা, আয়াত ১",
+      })
     } catch (error) {
       console.error("Failed to fetch data:", error)
       // Set ultimate fallback data
@@ -187,13 +181,6 @@ export default function HomePage() {
   }, [])
 
   const features = [
-    {
-      title: "পবিত্র কোরআন",
-      description: "সম্পূর্ণ কোরআন আরবি, বাংলা অনুবাদ ও তাফসিরসহ",
-      icon: BookOpen,
-      href: "/quran",
-      color: "bg-green-500",
-    },
     {
       title: "নামাজের সময়",
       description: "আপনার এলাকার নামাজের সময়সূচি ও নিয়মাবলী",
@@ -425,11 +412,6 @@ export default function HomePage() {
               <div>
                 <h4 className="font-semibold mb-4">প্রধান বিভাগ</h4>
                 <ul className="space-y-2 text-muted-foreground">
-                  <li>
-                    <Link href="/quran" className="hover:text-foreground">
-                      পবিত্র কোরআন
-                    </Link>
-                  </li>
                   <li>
                     <Link href="/hadith" className="hover:text-foreground">
                       সহীহ হাদিস

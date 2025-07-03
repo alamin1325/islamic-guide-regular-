@@ -27,62 +27,6 @@ export interface PrayerTimesResponse {
   message?: string
 }
 
-export interface QuranSurahsResponse {
-  success: boolean
-  data?: Array<{
-    id: number
-    name: string
-    arabicName: string
-    englishName: string
-    verses: number
-    revelation: string
-    meaning: string
-  }>
-  total?: number
-  error?: string
-  message?: string
-}
-
-export interface SurahDetailResponse {
-  success: boolean
-  data?: {
-    number: number
-    name: string
-    englishName: string
-    englishNameTranslation: string
-    numberOfAyahs: number
-    revelationType: string
-    verses: Array<{
-      number: number
-      numberInSurah: number
-      arabic: string
-      bengali: string
-      juz: number
-      manzil: number
-      page: number
-      ruku: number
-      hizbQuarter: number
-      sajda: boolean | object
-    }>
-  }
-  error?: string
-  message?: string
-}
-
-export interface VerseOfDayResponse {
-  success: boolean
-  data?: {
-    surahNumber: number
-    surahName: string
-    verseNumber: number
-    arabic: string
-    bengali: string
-    reference: string
-  }
-  error?: string
-  message?: string
-}
-
 // Enhanced API functions with multiple fallback layers
 export async function fetchPrayerTimes(city = "Dhaka", country = "Bangladesh"): Promise<PrayerTimesResponse> {
   const apis = [
@@ -249,45 +193,6 @@ function convertToBengaliTime(time24: string): string {
 function convertToBengaliNumber(num: string): string {
   const bengaliNumbers = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"]
   return num.replace(/\d/g, (digit) => bengaliNumbers[Number.parseInt(digit)])
-}
-
-export async function fetchQuranSurahs(): Promise<QuranSurahsResponse> {
-  try {
-    const response = await fetch("/api/quran/surahs")
-    return await response.json()
-  } catch (error) {
-    return {
-      success: false,
-      error: "Failed to fetch Quran surahs",
-      message: error instanceof Error ? error.message : "Unknown error",
-    }
-  }
-}
-
-export async function fetchSurahDetail(surahId: number): Promise<SurahDetailResponse> {
-  try {
-    const response = await fetch(`/api/quran/surah/${surahId}`)
-    return await response.json()
-  } catch (error) {
-    return {
-      success: false,
-      error: "Failed to fetch surah detail",
-      message: error instanceof Error ? error.message : "Unknown error",
-    }
-  }
-}
-
-export async function fetchVerseOfDay(): Promise<VerseOfDayResponse> {
-  try {
-    const response = await fetch("/api/quran/verse-of-day")
-    return await response.json()
-  } catch (error) {
-    return {
-      success: false,
-      error: "Failed to fetch verse of the day",
-      message: error instanceof Error ? error.message : "Unknown error",
-    }
-  }
 }
 
 // Location utilities
